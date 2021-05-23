@@ -1,42 +1,46 @@
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer, DateTime, create_engine
 from flask_sqlalchemy import SQLAlchemy
+from config import SQLALCHEMY_DATABASE_URI, DEBUG
 import json
 import os
-database_name = "online_shopping"
-database_path = "postgresql://{}:{}@{}/{}" \
-    .format('student', 'student', 'localhost:5432', database_name)
 
 db = SQLAlchemy()
 
-'''
-setup_db(app)
-    binds a flask application and a SQLAlchemy service
-'''
-def setup_db(app, database_path=database_path):
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.app = app
-    db.init_app(app)
-    #db.create_all()
 
+class Hospital(db.Model):
+    __tablename__ = 'hospital'
 
-'''
-Person
-Have title and release year
-'''
-class Person(db.Model):
-    __tablename__ = 'People'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    catchphrase = Column(String)
-
-    def __init__(self, name, catchphrase=""):
-        self.name = name
-        self.catchphrase = catchphrase
+    hospital_id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    description = Column(String)
+    phone = Column(String, nullable=False)
+    start_year = Column(DateTime, nullable=False)
 
     def format(self):
         return {
-            'id': self.id,
+            'id': self.hospital_id,
             'name': self.name,
-            'catchphrase': self.catchphrase}
+            'description': self.description,
+            'phone': self.phone,
+            'start_year': self.start_year
+        }
+
+
+class Doctors(db.Model):
+    __tablename__ = 'doctors'
+
+    doctor_id = Column(Integer, primary_key=True)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    categories = Column(db.ARRAY(String), nullable=False)
+    languages = Column(db.ARRAY(String), nullable=False)
+    experience = Column(Integer, nullable=False)
+
+    def format(self):
+        return {
+            'id': self.doctor_id,
+            'name': self.first_name+' '+self.last_name,
+            'categories': self.categories,
+            'languages': self.languages,
+            'experience': self.experience
+        }
