@@ -55,6 +55,16 @@ class Doctors(db.Model):
             'experience': self.experience
         }
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 class DoctorHospital(db.Model):
     __tablename__ = 'doctor_hospital'
@@ -77,6 +87,7 @@ class DoctorHospital(db.Model):
 
     def get_doctor(self):
         return {
+            'doctor_hospital_id': self.doctor_hospital_id,
             'doctor_id': self.doctor_id,
             'doctor_name': self.doctor.first_name+' '+self.doctor.last_name,
             'start_date':self.start_date

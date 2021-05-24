@@ -28,10 +28,7 @@ CREATE TABLE doctors
 	CONSTRAINT PK_docter PRIMARY KEY (doctor_id)
 );
 
-INSERT INTO doctors
-(first_name,last_name,categories,languages,experience)
-VALUES
-('Hang','Guo','')
+
 
 CREATE TABLE doctor_hospital
 (
@@ -72,3 +69,8 @@ INSERT INTO hospital
 VALUES
 ('Hoag','A good hospital','606-330-0123',1999)
 
+INSERT INTO doctors
+(first_name,last_name,categories,languages,experience)
+VALUES
+('Hang','Guo','{internal medicine,pediatrics}','{English,Mandarin,Cantonese}',7),
+('Vickey','Liu','{internal medicine,Obstetrics}')
