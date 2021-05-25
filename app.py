@@ -2,26 +2,19 @@ import os
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 from models import db, Hospital, Doctors, DoctorHospital
-#from flask_migrate import Migrate
 from auth.auth import AuthError, requires_auth
 
 
-
-
-def get_current_page(query, page_no):
-    start = (page_no-1)*10
-    end = start+10
-    #count = len([q.id for q in query])
-    return query[start:end]
-
-
-#def create_app(test_config=None):
 app = Flask(__name__)
 app.config.from_object('config')
 db.init_app(app)
 CORS(app)
-#with app.app_context():
-    #db.create_all()
+
+def get_current_page(query, page_no):
+    start = (page_no-1)*10
+    end = start+10
+    return query[start:end]
+
 
 @app.route('/')
 def get_greeting():
@@ -29,6 +22,7 @@ def get_greeting():
     please refer to the README.MD while testing the API.
     """
     return greeting
+
 
 @app.after_request
 def after_request(response):
@@ -41,6 +35,7 @@ def after_request(response):
         'GET,PUT,POST,DELETE'
     )
     return response
+
 
 @app.route('/hospital', methods=['GET'])
 def get_hospital():
@@ -58,6 +53,7 @@ def get_hospital():
         'hospital': data
     })
 
+
 @app.route('/doctors', methods=['GET'])
 def get_doctors():
     try:
@@ -73,6 +69,7 @@ def get_doctors():
         'success': True,
         'doctors': data
     })
+
 
 @app.route('/hospital-detail', methods=['GET'])
 @requires_auth('get:MyApp')
@@ -114,6 +111,7 @@ def create_doctor():
     except:
         abort(422)
 
+
 @app.route('/doctors/<int:doctor_id>', methods=['PATCH'])
 @requires_auth('patch:MyApp')
 def update_doctor(doctor_id):
@@ -138,6 +136,7 @@ def update_doctor(doctor_id):
     except:
         abort(422)
 
+
 @app.route('/doctors/<int:doctor_id>', methods=['DELETE'])
 @requires_auth('delete:MyApp')
 def delete_doctors(doctor_id):
@@ -154,6 +153,7 @@ def delete_doctors(doctor_id):
     except:
         abort(422)
 
+
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
@@ -161,6 +161,7 @@ def unprocessable(error):
         "error": 422,
         "message": "unprocessable"
     }), 422
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -170,6 +171,7 @@ def not_found(error):
         "message": "resource not found"
     }), 404
 
+
 @app.errorhandler(400)
 def bad_request(error):
     return jsonify({
@@ -177,6 +179,7 @@ def bad_request(error):
         "error": 400,
         "message": "bad request"
     }), 400
+
 
 @app.errorhandler(405)
 def not_found(error):
@@ -186,6 +189,7 @@ def not_found(error):
         "message": "method not allowed"
     }), 405
 
+
 @app.errorhandler(400)
 def not_found(error):
     return jsonify({
@@ -193,6 +197,7 @@ def not_found(error):
         "error": 400,
         "message": "Failed to verify authentication token."
     }), 400
+
 
 @app.errorhandler(401)
 def not_found(error):
@@ -202,6 +207,7 @@ def not_found(error):
         "message": "Unauthorized access or token expired."
     }), 401
 
+
 @app.errorhandler(403)
 def not_found(error):
     return jsonify({
@@ -209,6 +215,7 @@ def not_found(error):
         "error": 403,
         "message": "Permission not found in token."
     }), 403
+
 
 @app.errorhandler(AuthError)
 def authentification_failed(AuthError):
@@ -218,9 +225,6 @@ def authentification_failed(AuthError):
         "message": AuthError.error['description']
     }), 401
 
-    #return app
-
 
 if __name__ == '__main__':
-    #app = create_app()
     app.run(host='0.0.0.0', port=8080, debug=True)
