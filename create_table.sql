@@ -73,4 +73,19 @@ INSERT INTO doctors
 (first_name,last_name,categories,languages,experience)
 VALUES
 ('Hang','Guo','{internal medicine,pediatrics}','{English,Mandarin,Cantonese}',7),
-('Vickey','Liu','{internal medicine,Obstetrics}')
+('Vickey','Liu','{internal medicine,Obstetrics}','{English,Mandarin}',9)
+
+
+SELECT * FROM doctors
+
+DELETE FROM doctors
+where doctor_id = 22
+
+select *  FROM doctor_hospital
+
+INSERT INTO doctor_hospital 
+(hospital_id, doctor_id,start_date) 
+VALUES
+(1,15,'2015-01-03'),
+(1,16,'2012-02-18'),
+(2,15,'2017-12-05')
