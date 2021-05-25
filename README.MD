@@ -15,6 +15,7 @@ psql healthcare_management_test
 
 
 **API Documentation**
+Domain name: https://hmpuapi.herokuapp.com/
 HTTP REQUEST
 Authentication: Bearer JWT
 
