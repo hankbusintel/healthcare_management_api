@@ -12,7 +12,7 @@ class Hospital(db.Model):
     name = Column(String, nullable=False)
     description = Column(String)
     phone = Column(String, nullable=False)
-    start_year = Column(DateTime, nullable=False)
+    start_year = Column(Integer, nullable=False)
 
     def format(self):
         return {

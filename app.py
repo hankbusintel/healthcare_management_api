@@ -2,7 +2,9 @@ import os
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 from models import db, Hospital, Doctors, DoctorHospital
+#from flask_migrate import Migrate
 from auth.auth import AuthError, requires_auth
+
 
 
 
