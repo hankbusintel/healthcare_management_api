@@ -32,11 +32,11 @@ CREATE TABLE doctors
 
 CREATE TABLE doctor_hospital
 (
-	docter_hospital_id SERIAL,
+	doctor_hospital_id SERIAL,
 	hospital_id INT NOT NULL,
 	doctor_id INT NOT NULL,
 	start_date TIMESTAMP,
-	CONSTRAINT PK_docter_hospital PRIMARY KEY (docter_hospital_id),
+	CONSTRAINT PK_docter_hospital PRIMARY KEY (doctor_hospital_id),
 	CONSTRAINT FK_docter_honspital_Doctor FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)
 );
 
@@ -64,28 +64,34 @@ CREATE TABLE appointments
 	CONSTRAINT FK_appointment_patient FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
 );
 
-INSERT INTO hospital 
+INSERT INTO hospital
 (name, description, phone, start_year)
 VALUES
-('Hoag','A good hospital','606-330-0123',1999)
+('Hoag','A good hospital','606-330-0123',1999),
+('Another Hospital', 'New hospital', '612-321-1234',2005);
 
 INSERT INTO doctors
 (first_name,last_name,categories,languages,experience)
 VALUES
 ('Hang','Guo','{internal medicine,pediatrics}','{English,Mandarin,Cantonese}',7),
-('Vickey','Liu','{internal medicine,Obstetrics}','{English,Mandarin}',9)
+('Vickey','Liu','{internal medicine,Obstetrics}','{English,Mandarin}',9);
 
 
-SELECT * FROM doctors
 
-DELETE FROM doctors
-where doctor_id = 22
 
-select *  FROM doctor_hospital
+INSERT INTO doctor_hospital
+(hospital_id, doctor_id,start_date)
+SELECT h.hospital_id, d.doctor_id, '2012-01-05'
+FROM hospital h
+CROSS JOIN doctors d
 
-INSERT INTO doctor_hospital 
-(hospital_id, doctor_id,start_date) 
-VALUES
-(1,15,'2015-01-03'),
-(1,16,'2012-02-18'),
-(2,15,'2017-12-05')
+
+
+
+/*
+SELECT * FROM hospital
+
+SELECT * FROM Doctors
+
+DELETE FROM Doctors
+WHERE doctor_id >=3*/

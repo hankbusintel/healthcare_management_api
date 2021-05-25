@@ -8,7 +8,7 @@ from models import db, Doctors, Hospital, DoctorHospital
 
 
 def setup_db(app):
-    app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+    app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI+'_test'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = SQLALCHEMY_TRACK_MODIFICATIONS
     db.app = app
     db.init_app(app)
@@ -116,16 +116,12 @@ class HealthcareTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Authorization header not found')
 
     def test_not_found_delete_doctor(self):
-        res = self.client().delete('/doctors/2', headers=self.admin)
+        res = self.client().delete('/doctors/500', headers=self.admin)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
-    
-
-
-
 
     def test_auth_error_create_doctor(self):
         res = self.client().post('/doctors', json=self.create)
@@ -171,8 +167,6 @@ class HealthcareTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Permission not found.')
-    
-
 
     def test_3_delete_doctor(self):
         doctor = Doctors.query \
@@ -181,11 +175,12 @@ class HealthcareTestCase(unittest.TestCase):
             Doctors.last_name == self.patch['last_name']
         ) \
             .one_or_none()
+        print(doctor.doctor_id)
         res = self.client().delete('/doctors/{}'.format(doctor.doctor_id),
                                    headers=self.admin
                                    )
         data = json.loads(res.data)
-
+        print(res.status_code)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
@@ -197,7 +192,6 @@ class HealthcareTestCase(unittest.TestCase):
 
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['doctor']))
-
 
     def test_2_patch_doctors(self):
         doctor = Doctors.query \

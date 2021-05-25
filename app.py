@@ -141,7 +141,6 @@ def create_app(test_config=None):
             abort(404)
         try:
             doctor.delete()
-
             return jsonify({
                 'success': True,
                 'doctor': doctor.format()
