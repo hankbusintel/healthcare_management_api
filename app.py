@@ -18,10 +18,14 @@ def create_app(test_config=None):
     app.config.from_object('config')
     db.init_app(app)
     CORS(app)
+    #with app.app_context():
+        #db.create_all()
 
     @app.route('/')
     def get_greeting():
-        greeting = "Hello"
+        greeting = """Hello, welcome to the main page of the healthcare_management api,
+        please refer to the README.MD while testing the API.
+        """
         return greeting
 
     @app.after_request

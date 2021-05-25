@@ -71,7 +71,7 @@ class DoctorHospital(db.Model):
 
     doctor_hospital_id = Column(Integer, primary_key=True)
     hospital_id = Column(Integer, db.ForeignKey('hospital.hospital_id'), nullable=False)
-    doctor_id = Column(String, db.ForeignKey('doctors.doctor_id'), nullable=False)
+    doctor_id = Column(Integer, db.ForeignKey('doctors.doctor_id'), nullable=False)
     start_date = Column(db.DateTime(), nullable=False)
     hospital = db.relationship('Hospital', backref=db.backref('hospital_doctor'))
     doctor = db.relationship('Doctors', backref=db.backref('doctor_hospital'))
@@ -92,4 +92,3 @@ class DoctorHospital(db.Model):
             'doctor_name': self.doctor.first_name+' '+self.doctor.last_name,
             'start_date':self.start_date
         }
-
